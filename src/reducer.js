@@ -1,5 +1,5 @@
-import CartItem from './CartItem';
-import { useGlobalContext } from './context'
+// import CartItem from './CartItem';
+// import { useGlobalContext } from './context'
 
 const reducer = (state, action) => {
 
@@ -13,31 +13,49 @@ const reducer = (state, action) => {
         return { ...state, cart: state.cart.filter(item => item.id !== action.payload) }
     }
 
-    if (action.type === 'INCREASE') {
-        let tempCart = state.cart.map(item => {
-            if (item.id === action.payload) {
+    if (action.type === 'CHANGE') {
+        const { id, type } = action.payload;
 
+        let tempCart = state.cart.map(item => {
+            if (item.id === id && type === 'increase') {
                 return { ...item, amount: item.amount + 1 }
             }
-            return item;
-        })
+            if (item.id === id && type === 'decrease') {
+                return { ...item, amount: item.amount - 1 }
+            }
+            return item
+        }).filter(item => item.amount !== 0);
 
         return { ...state, cart: tempCart }
+
     }
 
-    if (action.type === 'DECREASE') {
-        let tempCart = state.cart
-            .map(item => {
-                if (item.id === action.payload) {
-                    return { ...item, amount: item.amount - 1 }
-                }
+    // if (action.type === 'INCREASE') {
+    //     let tempCart = state.cart.map(item => {
+    //         if (item.id === action.payload) {
 
-                return item;
-            })
-            .filter(item => item.amount !== 0)
+    //             return { ...item, amount: item.amount + 1 }
+    //         }
+    //         return item;
+    //     })
 
-        return { ...state, cart: tempCart }
-    }
+    //     return { ...state, cart: tempCart }
+    // }
+
+    // if (action.type === 'DECREASE') {
+    //     let tempCart = state.cart
+    //         .map(item => {
+    //             if (item.id === action.payload) {
+    //                 return { ...item, amount: item.amount - 1 }
+    //             }
+
+    //             return item;
+    //         })
+    //         .filter(item => item.amount !== 0)
+
+    //     return { ...state, cart: tempCart }
+    // }
+
     // call it with use effect - every time state.cart changes
     if (action.type === 'GET_TOTALS') {
         // get value of total and amount prop from reduce return object by destructuring
@@ -70,7 +88,8 @@ const reducer = (state, action) => {
         return { ...state, cart: action.payload, loading: false }
     }
 
-    return state;
+
+    throw new Error('no matching action type')
 };
 
 export default reducer;

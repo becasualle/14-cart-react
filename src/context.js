@@ -1,4 +1,4 @@
-import React, { useState, useContext, useReducer, useEffect } from 'react'
+import React, { useContext, useReducer, useEffect } from 'react'
 import cartItems from './data'
 // store reducer in separate file
 import reducer from './reducer'
@@ -30,12 +30,15 @@ const AppProvider = ({ children }) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id })
   }
 
-  const increase = id => {
-    dispatch({ type: 'INCREASE', payload: id })
+  const change = (id, type) => {
+    dispatch({ type: 'CHANGE', payload: { id, type } })
   }
-  const decrease = id => {
-    dispatch({ type: 'DECREASE', payload: id })
-  }
+  // const increase = id => {
+  //   dispatch({ type: 'INCREASE', payload: id })
+  // }
+  // const decrease = id => {
+  //   dispatch({ type: 'DECREASE', payload: id })
+  // }
 
   const fetchData = async () => {
     dispatch({ type: 'LOADING' });
@@ -57,8 +60,7 @@ const AppProvider = ({ children }) => {
         ...state,
         clearCart,
         removeItem,
-        increase,
-        decrease
+        change
       }}
     >
       {children}
