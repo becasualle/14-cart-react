@@ -30,32 +30,6 @@ const reducer = (state, action) => {
 
     }
 
-    // if (action.type === 'INCREASE') {
-    //     let tempCart = state.cart.map(item => {
-    //         if (item.id === action.payload) {
-
-    //             return { ...item, amount: item.amount + 1 }
-    //         }
-    //         return item;
-    //     })
-
-    //     return { ...state, cart: tempCart }
-    // }
-
-    // if (action.type === 'DECREASE') {
-    //     let tempCart = state.cart
-    //         .map(item => {
-    //             if (item.id === action.payload) {
-    //                 return { ...item, amount: item.amount - 1 }
-    //             }
-
-    //             return item;
-    //         })
-    //         .filter(item => item.amount !== 0)
-
-    //     return { ...state, cart: tempCart }
-    // }
-
     // call it with use effect - every time state.cart changes
     if (action.type === 'GET_TOTALS') {
         // get value of total and amount prop from reduce return object by destructuring
@@ -74,7 +48,7 @@ const reducer = (state, action) => {
                     amount: 0
                 }
             )
-
+        // returns a floating point number with 2 digits after the decimal place
         total = parseFloat(total.toFixed(2))
         // update state with new values of total and amount
         return { ...state, total, amount }

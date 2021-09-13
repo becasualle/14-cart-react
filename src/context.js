@@ -16,30 +16,24 @@ const initialState = {
   amount: 0,
 };
 
-
 const AppProvider = ({ children }) => {
-  // set card from data {id, title, price, img amount}
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // will call this func in CartContainer, and provide action instructions in reducer.js
+  // when we click on button in CartContainer, set state.cart: [];
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' })
   }
-  // call it in CartItem.js and will get id of item when click "remove btn"
+  // when we click on button in CartItem, we filter state.cart by id of this item
   const removeItem = (id) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id })
   }
 
+  // when we click on button in CartItem, we update state.amount depending on type (+1 for increase, -1 for decrease)
   const change = (id, type) => {
     dispatch({ type: 'CHANGE', payload: { id, type } })
   }
-  // const increase = id => {
-  //   dispatch({ type: 'INCREASE', payload: id })
-  // }
-  // const decrease = id => {
-  //   dispatch({ type: 'DECREASE', payload: id })
-  // }
 
+  // when component mounts, update state.cart with fetched data. Before it show data from local data.js file
   const fetchData = async () => {
     dispatch({ type: 'LOADING' });
     const response = await fetch(url);
@@ -49,6 +43,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => { fetchData() }, []);
 
+  // when state.cart changes, count amount and total and update state.amount and state.total
   useEffect(() => {
     dispatch({ type: 'GET_TOTALS' })
   }, [state.cart])
